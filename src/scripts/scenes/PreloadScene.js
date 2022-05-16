@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import LoadingBar from '../classes/LoadingBar';
 import tileset from '../../assets/tileset.png';
 import tilemap from '../../assets/tilemap.json';
+import objectsPng from '../../assets/objects.png';
+import objectsJson from '../../assets/objects.json';
 
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -16,6 +18,7 @@ export default class PreloadScene extends Phaser.Scene {
       frameHeight: 64
     });
     this.load.tilemapTiledJSON('tilemap', tilemap);
+    this.load.atlas('objects', objectsPng, objectsJson);
   }
 
   create () {
