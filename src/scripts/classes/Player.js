@@ -48,12 +48,18 @@ export default class Player {
 
   get velocity() {
     const speed = Math.abs(this._velocity);
+    const max = this.getMaxSpeed();
 
-    if (this.direction && speed < SPEED) {
+    if (this.direction && speed < max) {
       this._velocity += ACCELERATION * Math.sign(this.direction);
-    } else if (!this.direction && speed > 0) {
+    } else if (
+      (!this.direction && speed > 0) ||
+      (this.direction && speed > max)
+    ) {
       this._velocity -= ACCELERATION * Math.sign(this._velocity);
     }
+
+    console.log(this._velocity);
 
     return this._velocity;
   }
@@ -66,6 +72,10 @@ export default class Player {
     const vec2 = new Phaser.Math.Vector2();
 
     return vec2.setToPolar(this.car.rotation - Math.PI / 2, this.velocity);
+  }
+
+  getMaxSpeed() {
+    return SPEED * this.map.getTileFriction(this.car);
   }
 
   move() {
