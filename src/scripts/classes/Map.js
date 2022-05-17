@@ -20,6 +20,7 @@ export default class Map {
   create() {
     this.createLayers();
     this.createCollisions();
+    this.createCheckpoints();
   }
 
   createLayers() {
@@ -38,6 +39,21 @@ export default class Map {
         collision.name
       );
       sprite.setStatic(true);
+    });
+  }
+
+  createCheckpoints() {
+    this.checkpoints = [];
+
+    this.tilemap.findObject('checkpoints', checkpoint => {
+      const rectangle = new Phaser.Geom.Rectangle(
+        checkpoint.x,
+        checkpoint.y,
+        checkpoint.width,
+        checkpoint.height
+      );
+      rectangle.index = checkpoint.properties.find(property => property.name === 'value').value;
+      this.checkpoints.push(rectangle);
     });
   }
 
@@ -63,5 +79,11 @@ export default class Map {
     }
 
     return GRASS_FRICTION;
+  }
+
+  getCheckpoint(car) {
+    const checkpoint = this.checkpoints.find(checkpoint => checkpoint.contains(car.x, car.y));
+
+    return checkpoint ? parseInt(checkpoint.index) : false;
   }
 }
