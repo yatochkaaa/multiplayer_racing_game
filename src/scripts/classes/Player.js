@@ -10,6 +10,7 @@ const TURNS = Object.freeze({
 });
 const SPEED = 10;
 const ACCELERATION = 0.5;
+const SLIDE_ANGLE = 5;
 
 
 export default class Player {
@@ -82,6 +83,10 @@ export default class Player {
     return SPEED * this.map.getTileFriction(this.car);
   }
 
+  slide() {
+    this.car.angle += SLIDE_ANGLE;
+  }
+
   move() {
     this.car.setAngle(this.angle);
     const velocity = this.getVelocityFromAngle();
@@ -97,7 +102,6 @@ export default class Player {
   }
 
   onCheckpoint(checkpoint) {
-    console.log(checkpoint, this.checkpoint);
     if (checkpoint === 1 && this.checkpoint === this.map.checkpoints.length) {
       this.checkpoint = 1;
       ++this.laps;

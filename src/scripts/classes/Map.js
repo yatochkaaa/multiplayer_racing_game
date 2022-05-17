@@ -20,6 +20,7 @@ export default class Map {
   create() {
     this.createLayers();
     this.createCollisions();
+    this.createOils();
     this.createCheckpoints();
   }
 
@@ -39,6 +40,19 @@ export default class Map {
         collision.name
       );
       sprite.setStatic(true);
+    });
+  }
+
+  createOils() {
+    this.tilemap.findObject('oils', oil => {
+      const sprite = this.scene.matter.add.sprite(
+        oil.x + oil.width / 2,
+        oil.y - oil.height / 2,
+        'objects',
+        oil.name
+      );
+      sprite.setStatic(true);
+      sprite.setSensor(true);
     });
   }
 
