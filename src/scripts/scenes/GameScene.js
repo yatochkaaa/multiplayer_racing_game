@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Map from '../classes/Map';
 import Player from '../classes/Player';
+import Stats from '../classes/Stats';
 
 const LAPS = 3;
 
@@ -20,6 +21,7 @@ export default class GameScene extends Phaser.Scene {
   create() {
     this.map = new Map(this);
     this.player = new Player(this, this.map);
+    this.stats = new Stats(this, LAPS);
 
     this.cameras.main.setBounds(0, 0, this.map.tilemap.widthInPixels, this.map.tilemap.heightInPixels);
     this.cameras.main.startFollow(this.player.car);
@@ -32,13 +34,16 @@ export default class GameScene extends Phaser.Scene {
     });
   }
 
-  onLapComplete(lap) {
-    if (lap > LAPS) { 
+  onLapComplete() {
+    this.stats.onLapComplete();
+
+    if (this.stats.complete) { 
       this.scene.restart();
     }
   }
 
-  update() {
+  update(time, dt) {
+    this.stats.update(dt);
     this.player.move();
   }
 }
