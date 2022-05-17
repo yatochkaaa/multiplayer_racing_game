@@ -9,6 +9,8 @@ const TURNS = Object.freeze({
   RIGHT: 1
 });
 const SPEED = 10;
+const ACCELERATION = 0.5;
+
 
 export default class Player {
   constructor(scene, map) {
@@ -17,6 +19,7 @@ export default class Player {
     const position = this.map.getPlayerPosition();
     this.car = this.scene.matter.add.sprite(position.x, position.y, 'objects', 'car_blue_1');
     this.car.setFixedRotation(true);
+    this._velocity = 0;
   }
 
   get direction() {
@@ -44,7 +47,15 @@ export default class Player {
   }
 
   get velocity() {
-    return SPEED * this.direction;
+    const speed = Math.abs(this._velocity);
+
+    if (this.direction && speed < SPEED) {
+      this._velocity += ACCELERATION * Math.sign(this.direction);
+    } else if (!this.direction && speed > 0) {
+      this._velocity -= ACCELERATION * Math.sign(this._velocity);
+    }
+
+    return this._velocity;
   }
 
   get angle() {
