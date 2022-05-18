@@ -5,6 +5,7 @@ const DOCROOT = '../dist';
 const http = require('http');
 const path = require('path');
 const express = require('express');
+const socketIO = require('socket.io');
 
 // 2. Создать серевер, используя express и http
 const app = express();
@@ -19,4 +20,10 @@ app.use(staticContent);
 // 4. Запускаем сервер
 server.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
+});
+
+const io = socketIO(server);
+io.on('connection', socket => {
+  socket.emit('gameStart');
+  console.log(`New user connected ${socket.id}`);
 });

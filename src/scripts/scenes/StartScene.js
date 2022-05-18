@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import Client from '../classes/Client';
 
 export default class StartScene extends Phaser.Scene {
   constructor() {
@@ -55,9 +56,10 @@ export default class StartScene extends Phaser.Scene {
 
   requestGame() {
     // инициализировать клиент
+    this.client = new Client();
     // отправить запрос игры на сервер
+    this.client.init();
     // по факту получения противинка
-    // начать игру
-    this.startGame();
+    this.client.on('game', this.startGame, this);
   }
 }
