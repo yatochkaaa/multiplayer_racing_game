@@ -23,7 +23,7 @@ module.exports = {
   },
 
   startGame(session) {
-    session.playerSocket.emit('gameStart');
+    session.playerSocket.emit('gameStart', { master: true });
     session.enemySocket.emit('gameStart');
   },
 

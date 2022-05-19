@@ -14,11 +14,11 @@ const SLIDE_ANGLE = 5;
 
 
 export default class Player {
-  constructor(scene, map) {
+  constructor(scene, map, config) {
     this.scene = scene;
     this.map = map;
-    const position = this.map.getPlayerPosition();
-    this.car = this.scene.matter.add.sprite(position.x, position.y, 'objects', 'car_blue_1');
+    const position = this.map.getPlayerPosition(config.position);
+    this.car = this.scene.matter.add.sprite(position.x, position.y, 'objects', config.sprite);
     this.car.setFixedRotation(true);
     this._velocity = 0;
     this.checkpoint = 0;
